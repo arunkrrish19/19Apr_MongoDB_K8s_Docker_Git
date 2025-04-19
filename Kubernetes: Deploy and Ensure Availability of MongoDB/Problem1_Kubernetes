@@ -1,0 +1,35 @@
+A team needs a highly available MongoDB deployment using Kubernetes. Your task is to configure
+and deploy MongoDB as a StatefulSet and ensure its ongoing availability using Kubernetes-native
+features.
+Perform the following tasks in a standard Kubernetes environment (no custom setup or pre-created
+resources are required):
+Task 1: Create a Headless Service
+Create a headless service named mongo in the default namespace to enable stable network
+identities for MongoDB pods. This service should:
+● Be named mongo
+● Be of type ClusterIP
+● Have clusterIP: None
+● Expose port 27017
+Task 2: Deploy a MongoDB StatefulSet
+Create a StatefulSet named mongo with the following specifications:
+● Uses the image: mongo:latest
+● Has 3 replicas
+● Container exposes port 27017
+● Uses a volumeMount for persistent storage at /data/db (you may use emptyDir or a simple
+volumeClaimTemplate)
+● Pods should be named mongo-0, mongo-1, mongo-2
+Task 3: Add a Liveness Probe
+Ensure the MongoDB container has a liveness probe configured to verify service health:
+Use the command:
+mongo --eval "db.adminCommand('ping')"
+● Start after an initial delay of 30 seconds
+● Run every 10 seconds
+● Timeout after 5 seconds
+● Fail after 3 consecutive failed attempts (i.e., failureThreshold: 3)
+Task 4: Verify Pod Readiness
+Ensure that all 3 MongoDB pods are in the Running state with READY status 1/1. You can use
+kubectl get pods to confirm this.
+Constraints
+● Use only standard Kubernetes YAML manifests and kubectl commands.
+● Do not rely on Helm, Operators, or any external tools.
+● This should be deployable in a clean Kubernetes environment.
